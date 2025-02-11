@@ -1,4 +1,6 @@
-﻿namespace ServerBrightnnes
+﻿using ServerBrightnnes.Models;
+
+namespace ServerBrightnnes
 {
     using System;
     using System.IO;
@@ -16,7 +18,7 @@
         static async Task Main(string[] args)
         {
             //Declaration of all elements that i need
-            PhysicalMonitorController control = new PhysicalMonitorController();
+            IMonitorController control = new DdcutilMonitorController();
             List<int> values = new List<int>();
             List<int> values2 = new List<int>();
 
@@ -48,7 +50,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Errore nella gestione del client.\n");
+                    Console.WriteLine($"Errore nella gestione del client: \n"+ex);
                 }
             }
 
@@ -63,7 +65,7 @@
         /// with physical monitors connected to the Windows operating system. 
         /// Use native Windows APIs via P/Invoke to manage monitor brightness and contrast.
         /// </param>
-        static List<int> RetriveSettings(PhysicalMonitorController controller)
+        static List<int> RetriveSettings(IMonitorController controller)
         {
             List<int> values = new List<int>();
             values.Add(controller.GetBrightness());
@@ -120,7 +122,7 @@
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="valuesToApply"></param>
-        static void ApplySettings(PhysicalMonitorController controller, List<int> valuesToApply)
+        static void ApplySettings(IMonitorController controller, List<int> valuesToApply)
         {
             controller.SetBrightness((uint)valuesToApply.First());
             controller.SetContrast((uint)valuesToApply.Last());

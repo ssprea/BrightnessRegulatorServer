@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace ServerBrightnnes
+namespace ServerBrightnnes.Models;
+
+public class WindowsAmdMonitorController : IMonitorController
 {
-    public class PhysicalMonitorController : IDisposable
-    {
-        #region DllImport
+    #region DllImport
         [DllImport("dxva2.dll", EntryPoint = "GetNumberOfPhysicalMonitorsFromHMONITOR")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetNumberOfPhysicalMonitorsFromHMONITOR(nint hMonitor, ref uint pdwNumberOfPhysicalMonitors);
@@ -49,7 +46,7 @@ namespace ServerBrightnnes
 
         private IReadOnlyCollection<MonitorInfo> Monitors { get; set; }
 
-        public PhysicalMonitorController()
+        public WindowsAmdMonitorController()
         {
             UpdateMonitors();
         }
@@ -232,5 +229,4 @@ namespace ServerBrightnnes
             public bool IsContrastAvailable { get; set; }
         }
         #endregion
-    }
 }
